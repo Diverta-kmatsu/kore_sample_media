@@ -52,7 +52,7 @@ export async function generateStaticParams() {
 
 export async function generateStaticParams() {
   try {
-    const res = await fetch('https://your-api.com/features'); // ← 実際のAPIに置き換えてください
+    const res = await fetch('https://github.com/Diverta-kmatsu/kore_sample_media'); // ← 実際のAPIに置き換えてください
 
     if (!res.ok) {
       console.error('API fetch failed. Status:', res.status);
