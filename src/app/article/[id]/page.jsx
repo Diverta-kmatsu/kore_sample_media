@@ -24,26 +24,26 @@ export async function generateMetadata({ params }) {
 
 export async function generateStaticParams() {
   try {
-    const res = await fetch('https://github.com/Diverta-kmatsu/kore_sample_media'); 
+    const res = await fetch('https://github.com/Diverta-kmatsu/kore_sample_media'); // ← 正しいURLに修正してください
 
     if (!res.ok) {
-      console.error('Failed to fetch articles:', res.status);
-      return [];
+      console.error('Failed to fetch features. Status:', res.status);
+      return []; // APIエラー時は空配列を返す
     }
 
-    const articles = await res.json();
+    const data = await res.json();
 
-    if (!Array.isArray(articles)) {
-      console.error('Invalid article format:', articles);
-      return [];
+    if (!Array.isArray(data)) {
+      console.error('Invalid format returned from features API:', data);
+      return []; // データ形式が不正な場合も空配列
     }
 
-    return articles.map((article) => ({
-      id: article.id.toString(),
+    return data.map((feature) => ({
+      id: feature.id.toString(),
     }));
   } catch (error) {
-    console.error('Error fetching articles:', error);
-    return [];
+    console.error('generateStaticParams() error:', error);
+    return []; // ネットワークなどの例外時にも空配列
   }
 }
 export async function fetchArticles() {
