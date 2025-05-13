@@ -24,41 +24,29 @@ export async function generateMetadata({ params }) {
 
 export async function generateStaticParams() {
   try {
-    const res = await fetch('https://github.com/Diverta-kmatsu/kore_sample_media'); // ← 実際のAPIに置き換えてください
+    const res = await fetch('https://github.com/Diverta-kmatsu/kore_sample_media'); // ← 正しいAPIエンドポイントに変更
 
-    // レスポンス失敗時
     if (!res.ok) {
-      console.error('APIからの取得に失敗しました: ', res.status);
+      console.error('Failed to fetch articles:', res.status);
       return [];
     }
 
-    const features = await res.json();
+    const data = await res.json();
 
-    // データ形式チェック
-    if (!Array.isArray(features)) {
-      console.error('不正な形式のデータが返されました:', features);
+    if (!Array.isArray(data)) {
+      console.error('Invalid data format:', data);
       return [];
     }
 
-    // 正常データをパラメータにマップ
-    return features.map((feature) => ({
-      id: feature.id.toString(),
+    return data.map((article) => ({
+      id: article.id.toString(),
     }));
-  } catch (err) {
-    console.error('generateStaticParamsで例外が発生:', err);
+  } catch (error) {
+    console.error('generateStaticParams() error:', error);
     return [];
   }
 }
 
-
-    return data.map((feature) => ({
-      id: feature.id.toString(),
-    }));
-  } catch (error) {
-    console.error('generateStaticParams() error:', error);
-    return []; // ネットワークなどの例外時にも空配列
-  }
-}
 export async function fetchArticles() {
   const res = await fetch('https://example.com/api/articles');
   const data = await res.json();
