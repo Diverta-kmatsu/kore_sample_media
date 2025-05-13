@@ -23,26 +23,29 @@ export async function generateMetadata({ params }) {
 }
 
 export async function generateStaticParams() {
-  const res = await fetch('https://example.com/api/features'); // ← 実際のAPIに置き換えてください
+  try {
+    const res = await fetch('https://github.com/Diverta-kmatsu/kore_sample_media'); 
 
-  if (!res.ok) {
-    console.error('Failed to fetch features:', res.status);
+    if (!res.ok) {
+      console.error('Failed to fetch articles:', res.status);
+      return [];
+    }
+
+    const articles = await res.json();
+
+    if (!Array.isArray(articles)) {
+      console.error('Invalid article format:', articles);
+      return [];
+    }
+
+    return articles.map((article) => ({
+      id: article.id.toString(),
+    }));
+  } catch (error) {
+    console.error('Error fetching articles:', error);
     return [];
   }
-
-  const data = await res.json();
-
-  if (!Array.isArray(data)) {
-    console.error('Invalid data format:', data);
-    return [];
-  }
-
-  return data.map((feature) => ({
-    id: feature.id.toString(),
-  }));
 }
-
-
 export async function fetchArticles() {
   const res = await fetch('https://example.com/api/articles');
   const data = await res.json();
