@@ -24,7 +24,7 @@ export async function generateMetadata({ params }) {
 
 export async function generateStaticParams() {
   try {
-    const res = await fetch('https://github.com/Diverta-kmatsu/kore_sample_media'); // ← 実際のAPIに書き換えてください
+    const res = await fetch('https://kamatsumoto.g.kuroco.app'); // ← 実際のAPIに書き換えてください
 
     // ステータスコードチェック
     if (!res.ok) {
@@ -52,7 +52,7 @@ export async function generateStaticParams() {
 
 
 export async function fetchArticles() {
-  const res = await fetch('https://example.com/api/articles');
+  const res = await fetch('https://kamatsumoto.g.kuroco.app');
   const data = await res.json();
   return data;
 }
