@@ -24,29 +24,25 @@ export async function generateMetadata({ params }) {
 
 export async function generateStaticParams() {
   try {
-    const res = await fetch('https://kamatsumoto.g.kuroco.app'); // ← 実際のAPIに変更してください
+    const res = await fetch('https://kamatsumoto.g.kuroco.app'); // ← 実際の JSON API に変更する必要があります
 
-    // API呼び出しに失敗していないかチェック
     if (!res.ok) {
-      console.error('Failed to fetch data. Status:', res.status);
-      return []; // 安全のため空配列を返す
+      console.error('API fetch failed. Status:', res.status);
+      return [];
     }
 
     const data = await res.json();
 
-    // データが配列かどうか確認（ここが超重要）
-    if (!Array.isArray(data)) {
-      console.error('Invalid response format: expected array, got:', data);
-      return []; // 不正な形式でも空配列を返す
+    if (!data || !Array.isArray(data)) {
+      console.error('Invalid data format. Expected an array but got:', data);
+      return [];
     }
 
-    // 正常な配列であれば map 実行
-    return data.map((feature) => ({
-      id: feature.id.toString(),
-    }));
-
+    return data.map((item) => ({
+      id: item.id?.toString() ?? '',
+    })).filter(param => param.id); // idが空文字の場合は除外
   } catch (error) {
-    console.error('generateStaticParams() error:', error);
+    console.error('generateStaticParams error:', error);
     return [];
   }
 }
