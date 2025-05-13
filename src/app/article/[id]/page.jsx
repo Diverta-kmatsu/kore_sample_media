@@ -24,28 +24,32 @@ export async function generateMetadata({ params }) {
 
 export async function generateStaticParams() {
   try {
-    const res = await fetch('https://github.com/Diverta-kmatsu/kore_sample_media'); // ← 正しいAPIエンドポイントに変更
+    const res = await fetch('https://github.com/Diverta-kmatsu/kore_sample_media'); // ← 実際のAPIに書き換えてください
 
+    // ステータスコードチェック
     if (!res.ok) {
-      console.error('Failed to fetch articles:', res.status);
+      console.error('API fetch failed. Status:', res.status);
       return [];
     }
 
     const data = await res.json();
 
+    // nullや配列以外が返ってきた場合のチェック
     if (!Array.isArray(data)) {
-      console.error('Invalid data format:', data);
+      console.error('API response is not an array:', data);
       return [];
     }
 
-    return data.map((article) => ({
-      id: article.id.toString(),
+    // 正常な場合にのみ map を呼び出す
+    return data.map((item) => ({
+      id: item.id.toString(),
     }));
   } catch (error) {
     console.error('generateStaticParams() error:', error);
     return [];
   }
 }
+
 
 export async function fetchArticles() {
   const res = await fetch('https://example.com/api/articles');
