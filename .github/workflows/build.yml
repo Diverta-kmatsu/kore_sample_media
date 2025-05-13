@@ -15,13 +15,13 @@ jobs:
   # for Pull Request (exclude merged)
   pullreq_build:
     name: Build(pullreq)
-    if: (github.repository == 'diverta/front_next_media' && github.event_name == 'issue_comment' && startsWith(github.event.comment.body, '/kuroco stage') && github.event.issue.pull_request != null)
+    if: (github.repository == 'Diverta-kmatsu/kore_sample_media' && github.event_name == 'issue_comment' && startsWith(github.event.comment.body, '/kuroco stage') && github.event.issue.pull_request != null)
     runs-on: ubuntu-latest
     steps:
       - name: "Get branch name and sha"
         id: get_branch
         run: |
-          PR=$(curl -H "X-Kuroco-Auth: token de396df5ef2cadeccd5e053c2975a9f0" https://dev-next-media.g.kuroco.app/direct/menu/github/?pr=${{ github.event.issue.pull_request.url }})
+          PR=$(curl -H "X-Kuroco-Auth: token 5d6bed04557093c3b0f9b7575e760cad" https://kamatsumoto.g.kuroco.app/direct/menu/github/?pr=${{ github.event.issue.pull_request.url }})
           echo "branch=$(echo $PR | jq -r '.ref')" >> $GITHUB_OUTPUT
           echo "sha=$(echo $PR | jq -r '.sha')" >> $GITHUB_OUTPUT
       - name: Checkout Repo
@@ -60,14 +60,14 @@ jobs:
       - name: Webhook
         uses: diverta/workflow-webhook@v3
         env:
-          webhook_url: "https://dev-next-media.g.kuroco.app/direct/menu/github/"
-          webhook_secret: "de396df5ef2cadeccd5e053c2975a9f0"
-          data: '{"single_zip":"1","domain":"dev-next-media.g.kuroco-front.app","pr":"${{ github.event.issue.pull_request.url }}",  "repository":"${{ github.repository }}", "run_id":"${{ github.run_id }}", "hash":"${{ steps.get_branch.outputs.sha }}"}'
+          webhook_url: "https://kamatsumoto.g.kuroco.app/direct/menu/github/"
+          webhook_secret: "5d6bed04557093c3b0f9b7575e760cad"
+          data: '{"single_zip":"1","domain":"kamatsumoto.g.kuroco-front.app","pr":"${{ github.event.issue.pull_request.url }}",  "repository":"${{ github.repository }}", "run_id":"${{ github.run_id }}", "hash":"${{ steps.get_branch.outputs.sha }}"}'
           
   #for Push
   pushed_build:
     name: Build(pushed)
-    if: (github.repository == 'diverta/front_next_media' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch'))
+    if: (github.repository == 'Diverta-kmatsu/kore_sample_media' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch'))
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
@@ -101,6 +101,6 @@ jobs:
       - name: Webhook
         uses: diverta/workflow-webhook@v3
         env:
-          webhook_url: "https://dev-next-media.g.kuroco.app/direct/menu/github/"
-          webhook_secret: "de396df5ef2cadeccd5e053c2975a9f0"
-          data: '{"single_zip":"1","domain":"dev-next-media.g.kuroco-front.app","pr":"${{ github.event.issue.pull_request.url }}",  "repository":"${{ github.repository }}", "run_id":"${{ github.run_id }}", "hash":"${{ github.sha }}"}'
+          webhook_url: "https://kamatsumoto.g.kuroco.app/direct/menu/github/"
+          webhook_secret: "5d6bed04557093c3b0f9b7575e760cad"
+          data: '{"single_zip":"1","domain":"kamatsumoto.g.kuroco-front.app","pr":"${{ github.event.issue.pull_request.url }}",  "repository":"${{ github.repository }}", "run_id":"${{ github.run_id }}", "hash":"${{ github.sha }}"}'
