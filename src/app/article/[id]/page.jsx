@@ -23,16 +23,25 @@ export async function generateMetadata({ params }) {
 }
 
 export async function generateStaticParams() {
-  const dummyArticles = [
-    { id: '1' },
-    { id: '2' },
-    { id: '3' },
-  ];
+  const res = await fetch('https://example.com/api/features'); // ← 実際のAPIに置き換えてください
 
-  return dummyArticles.map(article => ({
-    id: article.id,
+  if (!res.ok) {
+    console.error('Failed to fetch features:', res.status);
+    return [];
+  }
+
+  const data = await res.json();
+
+  if (!Array.isArray(data)) {
+    console.error('Invalid data format:', data);
+    return [];
+  }
+
+  return data.map((feature) => ({
+    id: feature.id.toString(),
   }));
 }
+
 
 export async function fetchArticles() {
   const res = await fetch('https://example.com/api/articles');
