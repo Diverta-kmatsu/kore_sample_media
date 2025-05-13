@@ -23,11 +23,16 @@ export async function generateMetadata({ params }) {
 }
 
 export async function generateStaticParams() {
-  const items = await getAllContentList();
-  const paramID = items.map((item) => ({
-    id: item.topics_id.toString(),
+  const articles = await fetchArticles();
+
+  if (!Array.isArray(articles)) {
+    console.error('記事データの取得に失敗しました。', articles);
+    return []; // 空配列を返すことでビルドを落とさずに回避可能
+  }
+
+  return articles.map((article) => ({
+    id: article.id,
   }));
-  return paramID;
 }
 
 export default async function Page({ params }) {
