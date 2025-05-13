@@ -24,19 +24,32 @@ export async function generateMetadata({ params }) {
 
 export async function generateStaticParams() {
   try {
-    const res = await fetch('https://github.com/Diverta-kmatsu/kore_sample_media'); // ← 正しいURLに修正してください
+    const res = await fetch('https://github.com/Diverta-kmatsu/kore_sample_media'); // ← 実際のAPIに置き換えてください
 
+    // レスポンス失敗時
     if (!res.ok) {
-      console.error('Failed to fetch features. Status:', res.status);
-      return []; // APIエラー時は空配列を返す
+      console.error('APIからの取得に失敗しました: ', res.status);
+      return [];
     }
 
-    const data = await res.json();
+    const features = await res.json();
 
-    if (!Array.isArray(data)) {
-      console.error('Invalid format returned from features API:', data);
-      return []; // データ形式が不正な場合も空配列
+    // データ形式チェック
+    if (!Array.isArray(features)) {
+      console.error('不正な形式のデータが返されました:', features);
+      return [];
     }
+
+    // 正常データをパラメータにマップ
+    return features.map((feature) => ({
+      id: feature.id.toString(),
+    }));
+  } catch (err) {
+    console.error('generateStaticParamsで例外が発生:', err);
+    return [];
+  }
+}
+
 
     return data.map((feature) => ({
       id: feature.id.toString(),
