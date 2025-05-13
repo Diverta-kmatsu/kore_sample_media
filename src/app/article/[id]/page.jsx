@@ -22,18 +22,12 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export async function generateStaticParams() {
-  const articles = await fetchArticles();
-
-  if (!Array.isArray(articles)) {
-    console.error('記事データの取得に失敗しました。', articles);
-    return []; // 空配列を返すことでビルドを落とさずに回避可能
-  }
-
-  return articles.map((article) => ({
-    id: article.id,
-  }));
+export async function fetchArticles() {
+  const res = await fetch('https://example.com/api/articles');
+  const data = await res.json();
+  return data;
 }
+
 
 export default async function Page({ params }) {
   const item = await getDetails(params.id);
