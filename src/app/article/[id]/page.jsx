@@ -22,20 +22,17 @@ export async function generateMetadata({ params }) {
   };
 }
 
-// 例：仮のデータを使用している場合
 export async function generateStaticParams() {
-  // ここで記事リストを取得（APIでも、ローカルデータでも可）
-  const articles = [
+  const dummyArticles = [
     { id: '1' },
     { id: '2' },
     { id: '3' },
   ];
 
-  return articles.map(article => ({
-    id: article.id
+  return dummyArticles.map(article => ({
+    id: article.id,
   }));
 }
-
 
 export async function fetchArticles() {
   const res = await fetch('https://example.com/api/articles');
