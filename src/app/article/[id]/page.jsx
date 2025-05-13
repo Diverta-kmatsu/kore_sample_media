@@ -50,31 +50,6 @@ export async function generateStaticParams() {
   }
 }
 
-export async function generateStaticParams() {
-  try {
-    const res = await fetch('https://github.com/Diverta-kmatsu/kore_sample_media'); // ← 実際のAPIに置き換えてください
-
-    if (!res.ok) {
-      console.error('API fetch failed. Status:', res.status);
-      return [];
-    }
-
-    const data = await res.json();
-
-    if (!Array.isArray(data)) {
-      console.error('Invalid API response. Expected an array but got:', data);
-      return [];
-    }
-
-    return data.map((item) => ({
-      id: item.id.toString(),
-    }));
-  } catch (error) {
-    console.error('generateStaticParams() error:', error);
-    return [];
-  }
-}
-
 
 export async function fetchArticles() {
   const res = await fetch('https://example.com/api/articles');
