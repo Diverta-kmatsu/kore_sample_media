@@ -24,7 +24,7 @@ export async function generateMetadata({ params }) {
 
 export async function generateStaticParams() {
   try {
-    const res = await fetch('https://kamatsumoto.g.kuroco.app'); // ← 実際の JSON API に変更する必要があります
+    const res = await fetch('https://sample-kmatsumoto.g.kuroco.app'); // ← 実際の JSON API に変更する必要があります
 
     if (!res.ok) {
       console.error('API fetch failed. Status:', res.status);
@@ -50,7 +50,7 @@ export async function generateStaticParams() {
 
 
 export async function fetchArticles() {
-  const res = await fetch('https://kamatsumoto.g.kuroco.app');
+  const res = await fetch('sample-kmatsumoto.g.kuroco.app');
   const data = await res.json();
   return data;
 }
