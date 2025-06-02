@@ -23,38 +23,12 @@ export async function generateMetadata({ params }) {
 }
 
 export async function generateStaticParams() {
-  try {
-    const res = await fetch('https://sample-kmatsumoto.g.kuroco.app'); // ← 実際の JSON API に変更する必要があります
-
-    if (!res.ok) {
-      console.error('API fetch failed. Status:', res.status);
-      return [];
-    }
-
-    const data = await res.json();
-
-    if (!data || !Array.isArray(data)) {
-      console.error('Invalid data format. Expected an array but got:', data);
-      return [];
-    }
-
-    return data.map((item) => ({
-      id: item.id?.toString() ?? '',
-    })).filter(param => param.id); // idが空文字の場合は除外
-  } catch (error) {
-    console.error('generateStaticParams error:', error);
-    return [];
-  }
+  const items = await getAllContentList();
+  const paramID = items.map((item) => ({
+    id: item.topics_id.toString(),
+  }));
+  return paramID;
 }
-
-
-
-export async function fetchArticles() {
-  const res = await fetch('sample-kmatsumoto.g.kuroco.app');
-  const data = await res.json();
-  return data;
-}
-
 
 export default async function Page({ params }) {
   const item = await getDetails(params.id);
